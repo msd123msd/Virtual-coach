@@ -1,24 +1,57 @@
-import {useEffect, useState} from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
-function App (){
-  const [count,setCount]= useState (() => {
 
-const saved = localStorage.getItem('workoutCount')
-return saved ? Number(saved) :0
+function App() {
+  const [workouts, setWorkouts] = useState(() => {
+    const saved = localStorage.getItem('workouts')
+    return saved ? JSON.parse(saved) : []
+  })
+  const [workoutName, setWorkoutName] = useState('')
 
-})
-  
-useEffect (() => {
-  localStorage.setItem('workoutCount', count)
-}, [count])
+  useEffect(() => {
+    localStorage.setItem('workouts', JSON.stringify(workouts))
+  }, [workouts])
+
+
+  function addWorkout() {
+    if (workoutName.trim() === '') return
+
+    const newWorkout = {
+      id: Date.now(),
+      name: workoutName,
+      date: new Date().toLocaleDateString()
+    }
+
+    setWorkouts([...workouts, newWorkout])
+    setWorkoutName('')
+  }
+
+  function deleteWorkout (id) {
+    setWorkouts(workouts.filter((workout) => workout.id !== id))
+  }
 
   return (
     <div>
-    <h1> Training Coach App</h1>
-    <p> Workouts logged: {count}</p>
-      <button onClick={() => setCount (count + 1)} > Log a workout
-         </button>
-         </div>
+      <h1>Training Coach App</h1>
+
+      <input
+        type="text"
+        value={workoutName}
+        onChange={(e) => setWorkoutName(e.target.value)}
+        placeholder="Workout name"
+      />
+      <button onClick={addWorkout}>Add workout</button>
+
+      <ul>
+        {workouts.map((workout) => (
+          <li key={workout.id}>
+            {workout.name} — {workout.date}
+            <button onClick={()=> deleteWorkout (workout.id)}> Detele Workout</button>
+          </li>
+        ))}
+      </ul>
+    </div>
   )
 }
+
 export default App
