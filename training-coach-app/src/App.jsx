@@ -8,6 +8,7 @@ function App() {
   })
   const [workoutName, setWorkoutName] = useState('')
   const [workoutCategory, setWorkoutCategory] = useState('')
+  const categories = ['Strength', 'Run', 'Indoor Cycle', 'Outdoor Cycle', 'Yoga']
 
 
   useEffect(() => {
@@ -61,66 +62,23 @@ function App() {
 
 
 
- <h2>Run</h2>
-<ul>
-  {workouts
-    .filter((workout) => workout.category === "Run")
-    .map((workout) => (
-      <li key={workout.id}>
-        {workout.category} — {workout.name} — {workout.date}
-        <button onClick={() => deleteWorkout(workout.id)}>Delete Workout</button>
-      </li>
-    ))}
-</ul>
+{categories.map((category) => (
+  <div key={category}>
+    <h2>{category}</h2>
+    <ul>
+      {workouts
+        .filter((workout) => workout.category === category)
+        .map((workout) => (
+          <li key={workout.id}>
+            {workout.category} — {workout.name} — {workout.date}
+            <button onClick={() => deleteWorkout(workout.id)}>Delete Workout</button>
+          </li>
+        ))}
+    </ul>
+  </div>
+))}    
 
- <h2>Indoor Cycle</h2>
-<ul>
-  {workouts
-    .filter((workout) => workout.category === "Indoor Cycle")
-    .map((workout) => (
-      <li key={workout.id}>
-        {workout.category} — {workout.name} — {workout.date}
-        <button onClick={() => deleteWorkout(workout.id)}>Delete Workout</button>
-      </li>
-    ))}
-</ul>
-
- <h2>Outdoor Cycle</h2>
-<ul>
-  {workouts
-    .filter((workout) => workout.category === "Outdoor Cycle")
-    .map((workout) => (
-      <li key={workout.id}>
-        {workout.category} — {workout.name} — {workout.date}
-        <button onClick={() => deleteWorkout(workout.id)}>Delete Workout</button>
-      </li>
-    ))}
-</ul>
-
- <h2>Strength</h2>
-<ul>
-  {workouts
-    .filter((workout) => workout.category === "Strength")
-    .map((workout) => (
-      <li key={workout.id}>
-        {workout.category} — {workout.name} — {workout.date}
-        <button onClick={() => deleteWorkout(workout.id)}>Delete Workout</button>
-      </li>
-    ))}
-</ul>
-
- <h2>Yoga</h2>
-<ul>
-  {workouts
-    .filter((workout) => workout.category === "Yoga")
-    .map((workout) => (
-      <li key={workout.id}>
-        {workout.category} — {workout.name} — {workout.date}
-        <button onClick={() => deleteWorkout(workout.id)}>Delete Workout</button>
-      </li>
-    ))}
-</ul>
-    </div>
+</div> 
   )
 }
 
