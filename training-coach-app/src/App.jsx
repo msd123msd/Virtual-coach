@@ -8,6 +8,13 @@ function App() {
   })
   const [workoutName, setWorkoutName] = useState('')
   const [workoutCategory, setWorkoutCategory] = useState('')
+  const [workoutDistance, setWorkoutDistance] = useState('')
+  const [workoutDuration, setWorkoutDuration] = useState('')
+  const [workoutAvgHR, setWorkoutAvgHR] = useState('')
+  const [workoutRoute, setWorkoutRoute] = useState('')
+  const [workoutHRRecovery, setWorkoutHRRecovery] = useState('')
+  const [workoutHRDrop, setWorkoutHRDrop] = useState('')
+  const [workoutRPE, setWorkoutRPE] = useState('')
   const categories = ['Strength', 'Run', 'Indoor Cycle', 'Outdoor Cycle', 'Yoga']
 
 
@@ -24,11 +31,26 @@ function App() {
       name: workoutName,
       date: new Date().toLocaleDateString(),
       category: workoutCategory,
+      distance: workoutDistance,
+      duration: workoutDuration,
+      avgHR: workoutAvgHR,
+      route: workoutRoute,
+      HRRecovery: workoutHRRecovery,
+      HRDrop: workoutHRDrop,
+      RPE: workoutRPE
     }
 
     setWorkouts([...workouts, newWorkout])
     setWorkoutName('')
     setWorkoutCategory('')
+    setWorkoutDistance('')
+    setWorkoutDuration('')
+    setWorkoutAvgHR('')
+    setWorkoutRoute('')
+    setWorkoutHRRecovery('')
+    setWorkoutHRDrop('')
+    setWorkoutRPE('') 
+
   }
 
   function deleteWorkout (id) {
@@ -43,8 +65,58 @@ function App() {
         type="text"
         value={workoutName}
         onChange={(e) => setWorkoutName(e.target.value)}
-        placeholder="Workout name"
+        placeholder="Workout Name"
       />
+
+      <input
+        type="number"
+        value={workoutDistance}
+        onChange={(e) => setWorkoutDistance(e.target.value)}
+        placeholder="Distance (km)"
+      />
+
+      <input
+        type="number"
+        value={workoutDuration}
+        onChange={(e) => setWorkoutDuration(e.target.value)}
+        placeholder="Duration (hours)"
+      />
+
+      <input
+        type="number"
+        value={workoutAvgHR}
+        onChange={(e) => setWorkoutAvgHR(e.target.value)}
+        placeholder="Average Heart Rate (bpm)"
+      />
+
+
+      <input
+        type="text"
+        value={workoutRoute}
+        onChange={(e) => setWorkoutRoute(e.target.value)}
+        placeholder="Route"
+      />
+      
+      <input
+        type="number"
+        value={workoutHRRecovery}
+        onChange={(e) => setWorkoutHRRecovery(e.target.value)}
+        placeholder="Heart Rate Recovery (bpm)"
+      />
+
+      <input
+        type="number"
+        value={workoutHRDrop}
+        onChange={(e) => setWorkoutHRDrop(e.target.value)}
+        placeholder="Heart Rate Drop (bpm)"
+      />
+
+      <input  
+      type="number"
+      value={workoutRPE}
+      onChange={(e) => setWorkoutRPE(e.target.value)}
+      placeholder="Rate of Perceived Exertion (1-10)"
+      />  
 
       <select
   value={workoutCategory}
@@ -71,6 +143,13 @@ function App() {
         .map((workout) => (
           <li key={workout.id}>
             {workout.category} — {workout.name} — {workout.date}
+            {workout.distance && ` — ${workout.distance} km`}
+            {workout.duration && ` — ${workout.duration} hours`}
+            {workout.avgHR && ` — Avg HR: ${workout.avgHR} bpm`}
+            {workout.route && ` — Route: ${workout.route}`}
+            {workout.HRRecovery && ` — HR Recovery: ${workout.HRRecovery} bpm`}
+            {workout.HRDrop && ` — HR Drop: ${workout.HRDrop} bpm`}
+            {workout.RPE && ` — RPE: ${workout.RPE}`}   
             <button onClick={() => deleteWorkout(workout.id)}>Delete Workout</button>
           </li>
         ))}
