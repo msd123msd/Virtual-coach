@@ -61,6 +61,7 @@ function App() {
     <div>
       <h1>Training Coach App</h1>
 
+    <div className="add-workout-form"> 
       <input
         type="text"
         value={workoutName}
@@ -117,6 +118,7 @@ function App() {
       onChange={(e) => setWorkoutRPE(e.target.value)}
       placeholder="Rate of Perceived Exertion (1-10)"
       />  
+    
 
       <select
   value={workoutCategory}
@@ -132,26 +134,35 @@ function App() {
 
       <button onClick={addWorkout}>Add workout</button>
 
-
+</div>
 
 {categories.map((category) => (
   <div key={category}>
-    <h2>{category}</h2>
+    <h2 className="category-heading">{category}</h2>
     <ul>
       {workouts
         .filter((workout) => workout.category === category)
-        .map((workout) => (
-          <li key={workout.id}>
-            {workout.category} — {workout.name} — {workout.date}
-            {workout.distance && ` — ${workout.distance} km`}
-            {workout.duration && ` — ${workout.duration} hours`}
-            {workout.avgHR && ` — Avg HR: ${workout.avgHR} bpm`}
-            {workout.route && ` — Route: ${workout.route}`}
-            {workout.HRRecovery && ` — HR Recovery: ${workout.HRRecovery} bpm`}
-            {workout.HRDrop && ` — HR Drop: ${workout.HRDrop} bpm`}
-            {workout.RPE && ` — RPE: ${workout.RPE}`}   
-            <button onClick={() => deleteWorkout(workout.id)}>Delete Workout</button>
-          </li>
+        .map((workout) => 
+          (
+          
+    <li key={workout.id} className="workout-card">
+        <div className="workout-header">
+        <strong>{workout.name}</strong>
+        <span>{workout.date}</span>
+            </div>
+            <div className="workout-details">
+                {workout.distance && <span>Distance: {workout.distance} km</span>}
+                {workout.duration && <span>Duration: {workout.duration} h</span>}
+                {workout.avgHR && <span>Avg HR: {workout.avgHR} bpm</span>}
+                {workout.route && <span>Route: {workout.route}</span>}
+                {workout.HRRecovery && <span>HR Recovery: {workout.HRRecovery} bpm</span>}
+                {workout.HRDrop && <span>HR Drop: {workout.HRDrop} bpm</span>}
+                {workout.RPE && <span>RPE: {workout.RPE}</span>}
+            </div>
+        
+            <button className="delete-button" onClick={() => deleteWorkout(workout.id)}>Delete Workout</button>
+    </li>
+
         ))}
     </ul>
   </div>
