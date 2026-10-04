@@ -6,7 +6,12 @@ function App() {
     const saved = localStorage.getItem('workouts')
     return saved ? JSON.parse(saved) : []
   })
-  const [workoutName, setWorkoutName] = useState('')
+  const [routes, setRoutes] = useState(() => {
+    const saved = localStorage.getItem('routes')
+    return saved ? JSON.parse(saved) : ["Stiglingh Loop", "School Loop", "Stiglingh Straits", "EDS KCC 10", "Polo Fields", "DBN Musgrave", "DBN Musgrave 2 Beach", "Rolling Essenwood"]
+  })
+
+  const [workoutName, setWorkoutName] = useState('')   
   const [workoutCategory, setWorkoutCategory] = useState('')
   const [workoutDistance, setWorkoutDistance] = useState('')
   const [workoutDuration, setWorkoutDuration] = useState('')
@@ -16,14 +21,23 @@ function App() {
   const [workoutHRDrop, setWorkoutHRDrop] = useState('')
   const [workoutRPE, setWorkoutRPE] = useState('')
   const categories = ['Strength', 'Run', 'Indoor Cycle', 'Outdoor Cycle', 'Yoga']
+  const [newRouteName, setNewRouteName] = useState('')
 
 
   useEffect(() => {
-    localStorage.setItem('workouts', JSON.stringify(workouts))
-  }, [workouts])
+  localStorage.setItem('workouts', JSON.stringify(workouts))
+}, [workouts])
+
+useEffect(() => {
+  localStorage.setItem('routes', JSON.stringify(routes))
+}, [routes])
 
 
   function addWorkout() {
+    if (workoutRoute === '__new__') {
+  alert('Save your new route first, or pick an existing one')
+    return
+}
     if (workoutName.trim() === '') return
 
     const newWorkout = {
@@ -50,8 +64,21 @@ function App() {
     setWorkoutHRRecovery('')
     setWorkoutHRDrop('')
     setWorkoutRPE('') 
-
   }
+
+    function addRoute() {
+  if (newRouteName.trim() === '') return
+  if (routes.includes(newRouteName)) {
+    alert('Route already exists!')
+    return
+  }
+  setRoutes([...routes, newRouteName])
+  setWorkoutRoute(newRouteName)
+  setNewRouteName('')
+   }
+
+
+  
 
   function deleteWorkout (id) {
     setWorkouts(workouts.filter((workout) => workout.id !== id))
@@ -90,14 +117,6 @@ function App() {
         placeholder="Average Heart Rate (bpm)"
       />
 
-
-      <input
-        type="text"
-        value={workoutRoute}
-        onChange={(e) => setWorkoutRoute(e.target.value)}
-        placeholder="Route"
-      />
-      
       <input
         type="number"
         value={workoutHRRecovery}
@@ -131,6 +150,32 @@ function App() {
   <option value="Outdoor Cycle">Outdoor Cycle</option>
   <option value="Yoga">Yoga</option>
       </select>
+
+      <select
+  value={workoutRoute}
+  onChange={(e) => setWorkoutRoute(e.target.value)}
+      >
+
+  <option value="">Select route</option>
+  {routes.map((route) => (
+    <option key={route} value={route}>{route}</option>
+  ))}
+
+<option value="__new__">Add new route</option>
+
+      </select>
+      
+{workoutRoute === '__new__' && (
+  <div>
+    <input
+      type="text"
+      value={newRouteName}
+      onChange={(e) => setNewRouteName(e.target.value)}
+      placeholder="New route name"
+    />
+    <button onClick={addRoute}>Save route</button>
+  </div>
+)}
 
       <button onClick={addWorkout}>Add workout</button>
 
