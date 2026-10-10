@@ -30,6 +30,12 @@ function App() {
     {/* End Code for Training Card */}
 
     {/* Start Code for Wellness Card */}
+
+ const [wellnessEntries, setWellnessEntries] = useState(() => {
+    const saved = localStorage.getItem('wellnessEntries')
+    return saved ? JSON.parse(saved) : []
+ })
+    
   const [wellnessWeight, setWellnessWeight] = useState('')
   const [wellnessSleep, setWellnessSleep] = useState('')
   const [wellnessRestingHR, setWellnessRestingHR] = useState('')
@@ -94,6 +100,36 @@ function App() {
 
   {/* End Code for Training Input */}
 
+  {/* Start Code for Wellness Input */}
+  useEffect(() => {
+    localStorage.setItem('wellnessEntries', JSON.stringify(wellnessEntries))
+  }, [wellnessEntries])
+
+  function addWellnessEntry() {
+    if (wellnessWeight === '') return
+    const newEntry = {
+      id: Date.now(),
+      date: new Date().toLocaleDateString(),
+      weight: wellnessWeight,
+      sleep: wellnessSleep,
+      restingHR: wellnessRestingHR,
+      energy: wellnessEnergy,
+      soreness: wellnessSoreness,
+      mood: wellnessMood,
+      notes: wellnessNotes
+    }
+
+    setWellnessEntries([...wellnessEntries, newEntry])
+    setWellnessWeight('')
+    setWellnessSleep('')
+    setWellnessRestingHR('')
+    setWellnessEnergy('')
+    setWellnessSoreness('')
+    setWellnessMood('')
+    setWellnessNotes('')
+  }
+
+  {/* End Code for Wellness Input */}
 
   function deleteWorkout(id) {
     setWorkouts(workouts.filter((workout) => workout.id !== id))
@@ -139,10 +175,14 @@ function App() {
       </div>
     {/* End Code to display tab */}
 
+
     {/* Start Code for Training Card */}  
       {page === 'training' && (
         <div>
-          <div className="add-workout-form">
+          
+        <h2>Training</h2>
+
+        <div className="add-workout-form">
             <input
               type="text"
               value={workoutName}
@@ -266,13 +306,27 @@ function App() {
       )}
     {/* End Code for Training Card */} 
 
+
     {/* Start Code for Wellness Card */}
       {page === 'wellness' && (
         <div>
           <h2>Wellness</h2>
+
+         <div className="add-workout-form">
+         <input
+           type="number"
+           value={wellnessWeight}
+           onChange={(e) => setWellnessWeight(e.target.value)}
+           placeholder="Body weight (kg)"
+         />
+         <button onClick={addWellnessEntry}>Save Entry</button>
+       
+         </div>
         </div>
       )}
     {/* End Code for Wellness Card */} 
+
+
 
     {/* Start Code for Nutrition Card */} 
       {page === 'nutrition' && (
@@ -290,7 +344,7 @@ function App() {
        </div>
     )}
      {/* End Code for Summary Card */}
-     
+
     </div>
   )
 }
