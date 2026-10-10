@@ -2,16 +2,21 @@ import { useState, useEffect } from 'react'
 import './App.css'
 
 function App() {
+
+  {/* Start code for Training Card */}
   const [workouts, setWorkouts] = useState(() => {
     const saved = localStorage.getItem('workouts')
     return saved ? JSON.parse(saved) : []
   })
+  
   const [routes, setRoutes] = useState(() => {
     const saved = localStorage.getItem('routes')
     return saved ? JSON.parse(saved) : ["Stiglingh Loop", "School Loop", "Stiglingh Straits", "EDS KCC 10", "Polo Fields", "DBN Musgrave", "DBN Musgrave 2 Beach", "Rolling Essenwood"]
   })
 
-  const [workoutName, setWorkoutName] = useState('')   
+  const [page, setPage] = useState('training')
+
+  const [workoutName, setWorkoutName] = useState('')
   const [workoutCategory, setWorkoutCategory] = useState('')
   const [workoutDistance, setWorkoutDistance] = useState('')
   const [workoutDuration, setWorkoutDuration] = useState('')
@@ -22,22 +27,32 @@ function App() {
   const [workoutRPE, setWorkoutRPE] = useState('')
   const categories = ['Strength', 'Run', 'Indoor Cycle', 'Outdoor Cycle', 'Yoga']
   const [newRouteName, setNewRouteName] = useState('')
+    {/* End Code for Training Card */}
 
+    {/* Start Code for Wellness Card */}
+  const [wellnessWeight, setWellnessWeight] = useState('')
+  const [wellnessSleep, setWellnessSleep] = useState('')
+  const [wellnessRestingHR, setWellnessRestingHR] = useState('')
+  const [wellnessEnergy, setWellnessEnergy] = useState('')
+  const [wellnessSoreness, setWellnessSoreness] = useState('')
+  const [wellnessMood, setWellnessMood] = useState('')
+  const [wellnessNotes, setWellnessNotes] = useState('')     
+    {/* End Code for Wellness Card */}
+
+  {/* Start Code for Training Input */}
+  useEffect(() => {
+    localStorage.setItem('workouts', JSON.stringify(workouts))
+  }, [workouts])
 
   useEffect(() => {
-  localStorage.setItem('workouts', JSON.stringify(workouts))
-}, [workouts])
-
-useEffect(() => {
-  localStorage.setItem('routes', JSON.stringify(routes))
-}, [routes])
-
+    localStorage.setItem('routes', JSON.stringify(routes))
+  }, [routes])
 
   function addWorkout() {
     if (workoutRoute === '__new__') {
-  alert('Save your new route first, or pick an existing one')
-    return
-}
+      alert('Save your new route first, or pick an existing one')
+      return
+    }
     if (workoutName.trim() === '') return
 
     const newWorkout = {
@@ -63,157 +78,220 @@ useEffect(() => {
     setWorkoutRoute('')
     setWorkoutHRRecovery('')
     setWorkoutHRDrop('')
-    setWorkoutRPE('') 
+    setWorkoutRPE('')
   }
 
-    function addRoute() {
-  if (newRouteName.trim() === '') return
-  if (routes.includes(newRouteName)) {
-    alert('Route already exists!')
-    return
+  function addRoute() {
+    if (newRouteName.trim() === '') return
+    if (routes.includes(newRouteName)) {
+      alert('Route already exists!')
+      return
+    }
+    setRoutes([...routes, newRouteName])
+    setWorkoutRoute(newRouteName)
+    setNewRouteName('')
   }
-  setRoutes([...routes, newRouteName])
-  setWorkoutRoute(newRouteName)
-  setNewRouteName('')
-   }
+
+  {/* End Code for Training Input */}
 
 
-  
-
-  function deleteWorkout (id) {
+  function deleteWorkout(id) {
     setWorkouts(workouts.filter((workout) => workout.id !== id))
   }
+
+
 
   return (
     <div>
       <h1>Training Coach App</h1>
 
-    <div className="add-workout-form"> 
-      <input
-        type="text"
-        value={workoutName}
-        onChange={(e) => setWorkoutName(e.target.value)}
-        placeholder="Workout Name"
-      />
+      {/* Start Code to display tab */}
+      <div className="page-tabs">
 
-      <input
-        type="number"
-        value={workoutDistance}
-        onChange={(e) => setWorkoutDistance(e.target.value)}
-        placeholder="Distance (km)"
-      />
+       <button
+       className={page === 'training' ? 'tab active' : 'tab'}
+       onClick={() => setPage('training')}
+       >
+       Training
+       </button>
 
-      <input
-        type="number"
-        value={workoutDuration}
-        onChange={(e) => setWorkoutDuration(e.target.value)}
-        placeholder="Duration (hours)"
-      />
+       <button
+          className={page === 'wellness' ? 'tab active' : 'tab'}
+          onClick={() => setPage('wellness')}
+        >
+          Wellness
+       </button>
 
-      <input
-        type="number"
-        value={workoutAvgHR}
-        onChange={(e) => setWorkoutAvgHR(e.target.value)}
-        placeholder="Average Heart Rate (bpm)"
-      />
+       <button
+          className={page === 'nutrition' ? 'tab active' : 'tab'}
+          onClick={() => setPage('nutrition')}
+        >
+          Nutrition & Supplements
+       </button>
 
-      <input
-        type="number"
-        value={workoutHRRecovery}
-        onChange={(e) => setWorkoutHRRecovery(e.target.value)}
-        placeholder="Heart Rate Recovery (bpm)"
-      />
+       <button
+          className={page === 'summary' ? 'tab active' : 'tab'}
+          onClick={() => setPage('summary')}
+        >
+          Summary
+       </button>
 
-      <input
-        type="number"
-        value={workoutHRDrop}
-        onChange={(e) => setWorkoutHRDrop(e.target.value)}
-        placeholder="Heart Rate Drop (bpm)"
-      />
+      </div>
+    {/* End Code to display tab */}
 
-      <input  
-      type="number"
-      value={workoutRPE}
-      onChange={(e) => setWorkoutRPE(e.target.value)}
-      placeholder="Rate of Perceived Exertion (1-10)"
-      />  
-    
+    {/* Start Code for Training Card */}  
+      {page === 'training' && (
+        <div>
+          <div className="add-workout-form">
+            <input
+              type="text"
+              value={workoutName}
+              onChange={(e) => setWorkoutName(e.target.value)}
+              placeholder="Workout Name"
+            />
 
-      <select
-  value={workoutCategory}
-  onChange={(e) => setWorkoutCategory(e.target.value)}
-      >
-  <option value="">Select category</option>
-  <option value="Strength">Strength</option>
-  <option value="Run">Run</option>
-  <option value="Indoor Cycle">Indoor Cycle</option>
-  <option value="Outdoor Cycle">Outdoor Cycle</option>
-  <option value="Yoga">Yoga</option>
-      </select>
+            <select
+              value={workoutCategory}
+              onChange={(e) => setWorkoutCategory(e.target.value)}
+            >
+              <option value="">Select category</option>
+              <option value="Strength">Strength</option>
+              <option value="Run">Run</option>
+              <option value="Indoor Cycle">Indoor Cycle</option>
+              <option value="Outdoor Cycle">Outdoor Cycle</option>
+              <option value="Yoga">Yoga</option>
+            </select>
 
-      <select
-  value={workoutRoute}
-  onChange={(e) => setWorkoutRoute(e.target.value)}
-      >
+            <input
+              type="number"
+              value={workoutDistance}
+              onChange={(e) => setWorkoutDistance(e.target.value)}
+              placeholder="Distance (km)"
+            />
 
-  <option value="">Select route</option>
-  {routes.map((route) => (
-    <option key={route} value={route}>{route}</option>
-  ))}
+            <input
+              type="number"
+              value={workoutDuration}
+              onChange={(e) => setWorkoutDuration(e.target.value)}
+              placeholder="Duration (hours)"
+            />
 
-<option value="__new__">Add new route</option>
+            <input
+              type="number"
+              value={workoutAvgHR}
+              onChange={(e) => setWorkoutAvgHR(e.target.value)}
+              placeholder="Average Heart Rate (bpm)"
+            />
 
-      </select>
-      
-{workoutRoute === '__new__' && (
-  <div>
-    <input
-      type="text"
-      value={newRouteName}
-      onChange={(e) => setNewRouteName(e.target.value)}
-      placeholder="New route name"
-    />
-    <button onClick={addRoute}>Save route</button>
-  </div>
-)}
+            <input
+              type="number"
+              value={workoutHRRecovery}
+              onChange={(e) => setWorkoutHRRecovery(e.target.value)}
+              placeholder="Heart Rate Recovery (bpm)"
+            />
 
-      <button onClick={addWorkout}>Add workout</button>
+            <input
+              type="number"
+              value={workoutHRDrop}
+              onChange={(e) => setWorkoutHRDrop(e.target.value)}
+              placeholder="Heart Rate Drop (bpm)"
+            />
 
-</div>
+            <input
+              type="number"
+              value={workoutRPE}
+              onChange={(e) => setWorkoutRPE(e.target.value)}
+              placeholder="Rate of Perceived Exertion (1-10)"
+            />
 
-{categories.map((category) => (
-  <div key={category}>
-    <h2 className="category-heading">{category}</h2>
-    <ul>
-      {workouts
-        .filter((workout) => workout.category === category)
-        .map((workout) => 
-          (
-          
-    <li key={workout.id} className="workout-card">
-        <div className="workout-header">
-        <strong>{workout.name}</strong>
-        <span>{workout.date}</span>
+            <select
+              value={workoutRoute}
+              onChange={(e) => setWorkoutRoute(e.target.value)}
+            >
+              <option value="">Select route</option>
+              {routes.map((route) => (
+                <option key={route} value={route}>{route}</option>
+              ))}
+              <option value="__new__">Add new route</option>
+            </select>
+
+            {workoutRoute === '__new__' && (
+              <div>
+                <input
+                  type="text"
+                  value={newRouteName}
+                  onChange={(e) => setNewRouteName(e.target.value)}
+                  placeholder="New route name"
+                />
+                <button onClick={addRoute}>Save route</button>
+              </div>
+            )}
+
+            <button onClick={addWorkout}>Add workout</button>
+          </div>
+
+          {categories.map((category) => (
+            <div key={category}>
+              <h2 className="category-heading">{category}</h2>
+              <ul>
+                {workouts
+                  .filter((workout) => workout.category === category)
+                  .map((workout) => (
+                    <li key={workout.id} className="workout-card">
+                      <div className="workout-header">
+                        <strong>{workout.name}</strong>
+                        <span>{workout.date}</span>
+                      </div>
+                      <div className="workout-details">
+                        {workout.distance && <span>Distance: {workout.distance} km</span>}
+                        {workout.duration && <span>Duration: {workout.duration} h</span>}
+                        {workout.avgHR && <span>Avg HR: {workout.avgHR} bpm</span>}
+                        {workout.route && <span>Route: {workout.route}</span>}
+                        {workout.HRRecovery && <span>HR Recovery: {workout.HRRecovery} bpm</span>}
+                        {workout.HRDrop && <span>HR Drop: {workout.HRDrop} bpm</span>}
+                        {workout.RPE && <span>RPE: {workout.RPE}</span>}
+                      </div>
+                      <button
+                        className="delete-button"
+                        onClick={() => deleteWorkout(workout.id)}
+                      >
+                        Delete Workout
+                      </button>
+                    </li>
+                  ))}
+              </ul>
             </div>
-            <div className="workout-details">
-                {workout.distance && <span>Distance: {workout.distance} km</span>}
-                {workout.duration && <span>Duration: {workout.duration} h</span>}
-                {workout.avgHR && <span>Avg HR: {workout.avgHR} bpm</span>}
-                {workout.route && <span>Route: {workout.route}</span>}
-                {workout.HRRecovery && <span>HR Recovery: {workout.HRRecovery} bpm</span>}
-                {workout.HRDrop && <span>HR Drop: {workout.HRDrop} bpm</span>}
-                {workout.RPE && <span>RPE: {workout.RPE}</span>}
-            </div>
-        
-            <button className="delete-button" onClick={() => deleteWorkout(workout.id)}>Delete Workout</button>
-    </li>
+          ))}
+        </div>
+      )}
+    {/* End Code for Training Card */} 
 
-        ))}
-    </ul>
-  </div>
-))}    
+    {/* Start Code for Wellness Card */}
+      {page === 'wellness' && (
+        <div>
+          <h2>Wellness</h2>
+        </div>
+      )}
+    {/* End Code for Wellness Card */} 
 
-</div> 
+    {/* Start Code for Nutrition Card */} 
+      {page === 'nutrition' && (
+        <div>
+          <h2>Nutrition & Supplements</h2>
+        </div>
+      )}
+
+    {/* End Code for Nutrition Card */}
+
+    {/* Start Code for Summary Card */}
+      {page === 'summary' && (
+       <div>
+        <h2>Summary</h2>
+       </div>
+    )}
+     {/* End Code for Summary Card */}
+     
+    </div>
   )
 }
 
