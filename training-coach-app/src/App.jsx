@@ -318,33 +318,16 @@ function App() {
           <h2>Wellness</h2>
 
           <div className="add-workout-form">
-          <input
-           type="number"
-           value={wellnessWeight}
-           onChange={(e) => setWellnessWeight(e.target.value)}
-           placeholder="Body weight (kg)"
-          />
-          <button onClick={addWellnessEntry}>Save Entry</button>
-       
-          </div>
-
-        {wellnessEntries.map((entry) => (
-        <div key={entry.id} className="workout-card">
-           <div className="workout-header">
-           <strong>{entry.date}</strong>
+             <input
+             type="number"
+             value={wellnessWeight}
+             onChange={(e) => setWellnessWeight(e.target.value)}
+             placeholder="Body weight (kg)"
+            />
+            <button onClick={addWellnessEntry}>Save Entry</button>
            </div>
-        <div className="workout-details">
-            {entry.weight && <span>Weight: {entry.weight} kg</span>}
-        </div>
 
-        <button
-          className="delete-button"
-          onClick={() => deleteWellnessEntry(entry.id)}
-        >
-          Delete Entry
-        </button>
-  </div>
-))}
+
 
         </div>
       )}

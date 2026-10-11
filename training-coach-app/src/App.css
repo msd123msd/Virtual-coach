@@ -21,6 +21,10 @@ h1 {
   letter-spacing: -0.5px;
 }
 
+h2 {
+  color: var(--text-main);
+}
+
 .category-heading {
   color: var(--accent);
 }
