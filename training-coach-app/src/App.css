@@ -53,6 +53,7 @@ input, select, textarea {
   font-size: 0.9em;
   width: 100%;
   box-sizing: border-box;
+  color-scheme: dark;
 }
 
 select {
@@ -329,4 +330,56 @@ select {
   background-color: var(--tab-active);
   color: #0d1117;
   border-color: var(--tab-active);
+}
+
+input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+   border-radius: 6px;
+  cursor: pointer;
+  
+}
+
+input[type="checkbox"]:checked {
+  background-color: #14b8a6;
+  border-color: #14b8a6;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230d1117' stroke-width='3'><path d='M5 12l5 5 9-9'/></svg>");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 16px;
+}
+
+.add-workout-form label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-align: left;
+
+}
+
+.add-supplement-row {
+  display: flex;
+  gap: 8px;
+}
+
+.add-supplement-row input {
+  flex: 1;
+  width: auto;
+  min-width: 0;
+}
+
+.add-supplement-row button {
+  white-space: nowrap;
+}
+
+.add-supplement-row button {
+  background-color: var(--tab-active);
+  color: #0d1117;
+}
+
+.add-supplement-row button:hover {
+  background-color: #0f9d8e;
 }

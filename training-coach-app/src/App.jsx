@@ -43,7 +43,29 @@ function App() {
   const [wellnessSoreness, setWellnessSoreness] = useState('')
   const [wellnessMood, setWellnessMood] = useState('')
   const [wellnessNotes, setWellnessNotes] = useState('')     
+
     {/* End Code for Wellness Card */}
+
+
+    {/* Start Code for Nutrition Card */}
+
+  const [nutritionEntries, setNutritionEntries] = useState(() => {
+  const saved = localStorage.getItem('nutritionEntries')
+  return saved ? JSON.parse(saved) : []
+  })
+
+   const [supplements, setSupplements] = useState(() => {
+   const saved = localStorage.getItem('supplements')
+    return saved ? JSON.parse(saved) : ["Vitamin C", "Vitamin D", "Magnesium", "Creatine", "13 Nutrition", "Revive", "Pace and Power", "Maurten Gel", "Maurten CAF"]
+  })
+
+  const [nutritionWater, setNutritionWater] = useState('')
+  const [nutritionTaken, setNutritionTaken] = useState([])
+  const [nutritionSupplementName, setNutritionSupplementName] = useState('')
+
+    {/* End Code for Nutrition Card */}
+
+
 
   {/* Start Code for Training Input */}
   useEffect(() => {
@@ -135,6 +157,53 @@ function App() {
     }
 
   {/* End Code for Wellness Input */}
+
+
+  {/* Start Code for Nutrition Input */}
+
+  useEffect(() => {
+    localStorage.setItem('nutritionEntries', JSON.stringify(nutritionEntries))
+  }, [nutritionEntries])
+
+  useEffect(() => {
+    localStorage.setItem('supplements', JSON.stringify(supplements))
+  }, [supplements])
+
+
+function addSupplement() {
+    if (nutritionSupplementName.trim() === '') return
+    if (supplements.some((s) => s.toLowerCase() === nutritionSupplementName.trim().toLowerCase())) {  
+      alert('Supplement already exists!')
+      return
+    }
+    setSupplements([...supplements, nutritionSupplementName])
+    setNutritionSupplementName('')
+  }
+
+  function addNutritionEntry() {
+    if (nutritionWater === '' && nutritionTaken.length === 0) return
+    const newEntry = {
+    id: Date.now(),
+    date: new Date().toLocaleDateString(),
+    water: nutritionWater,
+    taken: nutritionTaken
+  }
+  
+  setNutritionEntries([...nutritionEntries, newEntry])
+  setNutritionWater('')
+  setNutritionTaken([])
+}
+
+  function toggleSupplement(supplement) {
+    if (nutritionTaken.includes(supplement)) {
+      setNutritionTaken(nutritionTaken.filter((s) => s !== supplement))
+    } else {
+      setNutritionTaken([...nutritionTaken, supplement])
+    }
+  }
+
+  {/* End Code for Nutrition Input */}
+
 
   function deleteWorkout(id) {
     setWorkouts(workouts.filter((workout) => workout.id !== id))
@@ -278,7 +347,6 @@ function App() {
             <button onClick={addWorkout}>Add workout</button>
           </div>
 
-          
         </div>
       )}
     {/* End Code for Training Card */} 
@@ -364,11 +432,48 @@ function App() {
 
 
     {/* Start Code for Nutrition Card */} 
-      {page === 'nutrition' && (
-        <div>
-          <h2>Nutrition & Supplements</h2>
-        </div>
-      )}
+
+     {page === 'nutrition' && (
+     <div>
+        <h2>Nutrition & Supplements</h2>
+      <div className="add-workout-form">
+     
+      <input
+        type="number"
+        min="0"
+        step="0.5"
+        value={nutritionWater}
+        onChange={(e) => setNutritionWater(e.target.value)}
+        placeholder="Water intake (litres)"
+      />
+
+      {supplements.map((supplement) => (
+      <label key={supplement}>
+      <input
+       type="checkbox"
+       checked={nutritionTaken.includes(supplement)}
+       onChange={() => toggleSupplement(supplement)}
+      />
+      {supplement}
+      </label>
+    ))}
+
+  <div className="add-supplement-row">
+  <input
+    type="text"
+    value={nutritionSupplementName}
+    onChange={(e) => setNutritionSupplementName(e.target.value)}
+    placeholder="Add a new supplement"
+  />
+  <button onClick={addSupplement}>Add supplement</button>
+  </div>   
+
+   <button onClick={addNutritionEntry}>Save Entry</button>
+
+      </div>
+    </div>
+    )}
+
 
     {/* End Code for Nutrition Card */}
 
