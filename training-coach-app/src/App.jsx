@@ -318,13 +318,63 @@ function App() {
           <h2>Wellness</h2>
 
           <div className="add-workout-form">
+
              <input
              type="number"
+             min="1"
              value={wellnessWeight}
              onChange={(e) => setWellnessWeight(e.target.value)}
              placeholder="Body weight (kg)"
             />
+            
+            <input
+              type="number"
+              min="1"
+              value={wellnessSleep}
+              onChange={(e) => setWellnessSleep(e.target.value)}
+              placeholder="Sleep (hours)"
+            />
+
+            <input
+              type="number"
+              min="1"
+              value={wellnessRestingHR}
+              onChange={(e) => setWellnessRestingHR(e.target.value)}
+              placeholder="Resting Heart Rate (bpm)"
+            />
+
+            <select
+              value={wellnessEnergy}
+              onChange={(e) => setWellnessEnergy(e.target.value)}
+            >
+              <option value="">Select Energy Level (1-10)</option>
+              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => (
+                <option key={n} value={n}>{n}</option>
+              ))}
+             </select>
+
+            <select
+              value={wellnessSoreness}
+              onChange={(e) => setWellnessSoreness(e.target.value)}
+            >
+              <option value="">Select Soreness Level (1-10)</option>
+              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => (
+                <option key={n} value={n}>{n}</option>
+              ))}
+            </select>
+
+            <select
+              value={wellnessMood}
+              onChange={(e) => setWellnessMood(e.target.value)}
+            >
+              <option value="">Select Mood Level (1-10)</option>
+              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => (
+                <option key={n} value={n}>{n}</option>
+              ))}
+            </select>
+
             <button onClick={addWellnessEntry}>Save Entry</button>
+
            </div>
 
 
