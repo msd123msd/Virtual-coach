@@ -278,38 +278,7 @@ function App() {
             <button onClick={addWorkout}>Add workout</button>
           </div>
 
-          {categories.map((category) => (
-            <div key={category}>
-              <h2 className="category-heading">{category}</h2>
-              <ul>
-                {workouts
-                  .filter((workout) => workout.category === category)
-                  .map((workout) => (
-                    <li key={workout.id} className="workout-card">
-                      <div className="workout-header">
-                        <strong>{workout.name}</strong>
-                        <span>{workout.date}</span>
-                      </div>
-                      <div className="workout-details">
-                        {workout.distance && <span>Distance: {workout.distance} km</span>}
-                        {workout.duration && <span>Duration: {workout.duration} h</span>}
-                        {workout.avgHR && <span>Avg HR: {workout.avgHR} bpm</span>}
-                        {workout.route && <span>Route: {workout.route}</span>}
-                        {workout.HRRecovery && <span>HR Recovery: {workout.HRRecovery} bpm</span>}
-                        {workout.HRDrop && <span>HR Drop: {workout.HRDrop} bpm</span>}
-                        {workout.RPE && <span>RPE: {workout.RPE}</span>}
-                      </div>
-                      <button
-                        className="delete-button"
-                        onClick={() => deleteWorkout(workout.id)}
-                      >
-                        Delete Workout
-                      </button>
-                    </li>
-                  ))}
-              </ul>
-            </div>
-          ))}
+          
         </div>
       )}
     {/* End Code for Training Card */} 
