@@ -242,12 +242,15 @@ function App() {
               placeholder="Heart Rate Drop (bpm)"
             />
 
-            <input
-              type="number"
+            <select
               value={workoutRPE}
               onChange={(e) => setWorkoutRPE(e.target.value)}
-              placeholder="Rate of Perceived Exertion (1-10)"
-            />
+            >
+              <option value="">Select RPE Level (1-10)</option>
+              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => (
+                <option key={n} value={n}>{n}</option>
+              ))}
+            </select>
 
             <select
               value={workoutRoute}
@@ -372,6 +375,12 @@ function App() {
                 <option key={n} value={n}>{n}</option>
               ))}
             </select>
+
+            <textarea
+            value={wellnessNotes}
+            onChange={(e) => setWellnessNotes(e.target.value)}
+            placeholder="Notes"
+            />    
 
             <button onClick={addWellnessEntry}>Save Entry</button>
 
